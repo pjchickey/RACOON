@@ -1,0 +1,1 @@
+For linux and python scripts that enable system logic (such as auto rebooting the pi or automatically running a certain python file)
