@@ -86,11 +86,10 @@ SUCCESS = """\
 
 def get_current_branch():
 
-    out = subprocess.run("git branch", capture_output=True, text=True)
+    out = subprocess.check_output(["git", "branch"]).decode('utf-8')
 
-    current_branch_full_match = re.search(RE_CURRENT_BRANCH, out.stdout)
+    current_branch_full_match = re.search(RE_CURRENT_BRANCH, out)
     current_branch = current_branch_full_match.group(1)
-
     return current_branch
 
 class StreamingOutput(object):
@@ -211,7 +210,8 @@ class StreamingServer(socketserver.ThreadingMixIn, server.HTTPServer):
     allow_reuse_address = True
     daemon_threads = True
 
-if get_current_branch != "main":
+if get_current_branch() != "main":
+    print(get_current_branch())
     raise OSError("Not on Main branch! Commit any unsaved changes and switch to main using git checkout main and run this program again :)")
 
 global camera
