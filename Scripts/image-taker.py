@@ -14,6 +14,8 @@ import os
 import subprocess
 import re
 
+CAMERA_RESOLUTION = [600, 600]
+
 RE_CURRENT_BRANCH = re.compile(
     r"^[*]"       # Leading "*" denotes the current branch from "git branch" 
     "\s{1}"       # Single space after "*"
@@ -29,7 +31,7 @@ categories = [
     "Cat5"
 ]
 
-HOME="""\
+HOME=f"""\
 <html>
 <head>
 <title>RACOON Image Taker</title>
@@ -37,7 +39,7 @@ HOME="""\
 <body>
 <button onclick="document.location='index.html'">Home</button>
 <center><h1>Racoon Image Taker</h1></center>
-<center><img src="stream.mjpg" width="640" height="480"></center>
+<center><img src="stream.mjpg" width="{CAMERA_RESOLUTION[0]}" height="{CAMERA_RESOLUTION[1]}"></center>
 <br>
 <center><button onclick="document.location='take-picture.html'">Take Picture</button></center>
 </body>
@@ -53,7 +55,7 @@ PICTURE=f"""\
 <button onclick="document.location='index.html'">Home</button>
 <center><h1>Racoon Image Taker</h1></center>
 <center><p>Note: Please wait until Image Loads to Submit</p></center>
-<center><img src="img.png" width="640" height="480"></center>
+<center><img src="img.png" width="{CAMERA_RESOLUTION[0]}" height="{CAMERA_RESOLUTION[1]}"></center>
 <center><button onclick="document.location='index.html'">Retake</button></center>
 <center><h3>Specify Image Info</h3></center>
 <center><form action="/take-picture.html" method="post">
@@ -190,7 +192,7 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
             self.send_header('Content-Length', len(frame))
             self.end_headers()
             self.wfile.write(frame)
-            camera.resolution=(640,480)
+            camera.resolution=(CAMERA_RESOLUTION[0],CAMERA_RESOLUTION[1])
             camera.start_recording(output, format='mjpeg')
         elif self.path == '/stream.mjpg':
             self.send_response(200)
@@ -260,7 +262,7 @@ if get_current_branch() != "main":
 
 global camera
 global output
-camera = picamera.PiCamera(resolution='640x480', framerate=24)
+camera = picamera.PiCamera(resolution=f'{CAMERA_RESOLUTION[0]}x{CAMERA_RESOLUTION[1]}', framerate=24)
 output = StreamingOutput()
 camera.start_recording(output, format='mjpeg')
 try:
