@@ -232,8 +232,8 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
         data[1] = categories[int(data[1].replace("category=", ""))]
         print(str(data))
         folder_path= "/home/pi/RACOON/Images/" + str(data[1])
-        if not(os.path.isdir(img_path)):
-            os.mkdir(img_path)
+        if not(os.path.isdir(folder_path)):
+            os.mkdir(folder_path)
             dir_made = True
         img_path = folder_path + f"/{data[0]}"
         i = 0
