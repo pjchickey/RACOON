@@ -97,9 +97,9 @@ def get_current_branch():
 
 def upload_image(short_img_path):
     commit_info = short_img_path.split("/")
-    out = subprocess.check_output(["git", "pull"])
-    out = subprocess.check_output(["git", "add", "."])
-    out = subprocess.check_output(["git", "commit", "-a", "-m", f"Upload {commit_info[1]} to {commit_info[0]}"])
+    out = subprocess.check_output(["git", "pull"]).decode('utf-8')
+    out += subprocess.check_output(["git", "add", "."]).decode('utf-8')
+    out += subprocess.check_output(["git", "commit", "-a", "-m", f"Upload {commit_info[1]} to {commit_info[0]}"]).decode('utf-8')
 
     return out
 
@@ -236,6 +236,7 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
         Path("/home/pi/RACOON/Scripts/img.png").rename(img_path)
         try:
             out = upload_image(img_path.replace("/home/pi/RACOON/Images/", ""))
+            print(out)
             self._redirect('/success.html')
         except subprocess.CalledProcessError:
             error_text = subprocess.CalledProcessError.output
