@@ -84,6 +84,9 @@ SUCCESS = """\
 </html>
 """
 
+global error_text
+error_text = ""
+
 def get_current_branch():
 
     out = subprocess.check_output(["git", "branch"]).decode('utf-8')
@@ -91,6 +94,16 @@ def get_current_branch():
     current_branch_full_match = re.search(RE_CURRENT_BRANCH, out)
     current_branch = current_branch_full_match.group(1)
     return current_branch
+
+def upload_image(short_img_path):
+    try:
+        commit_info = short_img_path.split("/")
+        out = subprocess.check_output(["git", "pull"])
+        out = subprocess.check_output(["git", "add", "."])
+        out = subprocess.check_output(["git", "commit", "-a", "-m", f"Upload {commit_info[1]} to {commit_info[0]}"])
+    except subprocess.CalledProcessError:
+        self._redirect('/error.html')
+        error_text = out.decode('utf-8')
 
 class StreamingOutput(object):
     def __init__(self):
@@ -112,6 +125,7 @@ class StreamingOutput(object):
 class StreamingHandler(server.BaseHTTPRequestHandler):
     global camera
     global output
+    global error_text
     def _redirect(self, path):
         self.send_response(303)
         self.send_header('Content-type', 'text/html')
@@ -138,6 +152,25 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
             self.wfile.write(content)
         elif self.path == '/success.html':
             content = SUCCESS.encode('utf-8')
+            self.send_response(200)
+            self.send_header('Content-Type', 'text/html')
+            self.send_header('Content-Length', len(content))
+            self.end_headers()
+            self.wfile.write(content)
+        elif self.path == '/error.html':
+            ERROR = f"""\
+            <html>
+            <head>
+            <title>Success!</title>
+            </head>
+            <body>
+            <center><h1>Well Shit.</h1></center>
+            <p>{error_text}</p><br>
+            <center><button onclick="document.location='index.html'">Home</button></center>
+            </body>
+            </html>
+            """
+            content = ERROR.encode('utf-8')
             self.send_response(200)
             self.send_header('Content-Type', 'text/html')
             self.send_header('Content-Length', len(content))
@@ -203,6 +236,7 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
             i += 1
         img_path += f"{i}.png"
         Path("/home/pi/RACOON/Scripts/img.png").rename(img_path)
+        upload_image(img_path.replace("/home/pi/RACOON/Images/", ""))
         self._redirect('/success.html')
         
 
