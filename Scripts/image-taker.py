@@ -11,6 +11,15 @@ from http import server
 import time
 from pathlib import Path
 import os
+import subprocess
+import re
+
+RE_CURRENT_BRANCH = re.compile(
+    r"^[*]"       # Leading "*" denotes the current branch from "git branch" 
+    "\s{1}"       # Single space after "*"
+    "(.*)",       # Group 1: current branch name 
+    re.MULTILINE
+)
 
 categories = [
     "Cat1",
@@ -75,6 +84,15 @@ SUCCESS = """\
 </html>
 """
 
+def get_current_branch():
+
+    out = subprocess.run("git branch", capture_output=True, text=True)
+
+    current_branch_full_match = re.search(RE_CURRENT_BRANCH, out.stdout)
+    current_branch = current_branch_full_match.group(1)
+
+    return current_branch
+
 class StreamingOutput(object):
     def __init__(self):
         self.frame = None
@@ -91,12 +109,6 @@ class StreamingOutput(object):
                 self.condition.notify_all()
             self.buffer.seek(0)
         return self.buffer.write(buf)
-
-global camera
-global output
-camera = picamera.PiCamera(resolution='640x480', framerate=24)
-output = StreamingOutput()
-camera.start_recording(output, format='mjpeg')
 
 class StreamingHandler(server.BaseHTTPRequestHandler):
     global camera
@@ -199,8 +211,14 @@ class StreamingServer(socketserver.ThreadingMixIn, server.HTTPServer):
     allow_reuse_address = True
     daemon_threads = True
 
-#Uncomment the next line to change your Pi's Camera rotation (in degrees)
-#camera.rotation = 90
+if get_current_branch != "main":
+    raise OSError("Not on Main branch! Please switch to it using git checkout main and run this program again")
+
+global camera
+global output
+camera = picamera.PiCamera(resolution='640x480', framerate=24)
+output = StreamingOutput()
+camera.start_recording(output, format='mjpeg')
 try:
     address = ('', 8000)
     server = StreamingServer(address, StreamingHandler)
