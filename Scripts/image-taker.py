@@ -164,6 +164,10 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
             <body>
             <center><h1>Well Shit.</h1></center>
             <p>{error_text}</p><br>
+            <br>
+            <br>
+            <br>
+            <p>Image Not Saved. Please Retake.</p>
             <center><button onclick="document.location='index.html'">Home</button></center>
             </body>
             </html>
@@ -219,6 +223,7 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
             'curl -d "submit=On" http://server-ip-address:port' 
         """
         global error_text
+        dir_made = False
         content_length = int(self.headers['Content-Length'])    # Get the size of data
         post_data = bytes.decode(self.rfile.read(content_length))   # Get the data
         print(post_data)
@@ -226,10 +231,11 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
         data[0] = data[0].replace("desc=", "").lower().replace("+", "").replace("-", "").replace("_", "")
         data[1] = categories[int(data[1].replace("category=", ""))]
         print(str(data))
-        img_path= "/home/pi/RACOON/Images/" + str(data[1])
+        folder_path= "/home/pi/RACOON/Images/" + str(data[1])
         if not(os.path.isdir(img_path)):
             os.mkdir(img_path)
-        img_path += f"/{data[0]}"
+            dir_made = True
+        img_path = folder_path + f"/{data[0]}"
         i = 0
         while os.path.exists(f"{img_path}{i}.png"):
             i += 1
@@ -241,7 +247,9 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
             self._redirect('/success.html')
         except subprocess.CalledProcessError as e:
             error_text = e.output.decode('utf-8')
-            print(error_text)
+            os.remove(img_path)
+            if dir_made:
+                os.rmdir(folder_path)
             self._redirect('/error.html')
         
 
