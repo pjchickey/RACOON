@@ -218,6 +218,7 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
         """ do_POST() can be tested using curl command 
             'curl -d "submit=On" http://server-ip-address:port' 
         """
+        global error_text
         content_length = int(self.headers['Content-Length'])    # Get the size of data
         post_data = bytes.decode(self.rfile.read(content_length))   # Get the data
         print(post_data)
