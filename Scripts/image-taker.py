@@ -9,6 +9,16 @@ import socketserver
 from threading import Condition
 from http import server
 import time
+from pathlib import Path
+import os
+
+categories = [
+    "Cat1",
+    "Cat2",
+    "waaa",
+    "Cat4",
+    "Cat5"
+]
 
 HOME="""\
 <html>
@@ -19,12 +29,13 @@ HOME="""\
 <button onclick="document.location='index.html'">Home</button>
 <center><h1>Racoon Image Taker</h1></center>
 <center><img src="stream.mjpg" width="640" height="480"></center>
+<br>
 <center><button onclick="document.location='take-picture.html'">Take Picture</button></center>
 </body>
 </html>
 """
 
-PICTURE="""\
+PICTURE=f"""\
 <html>
 <head>
 <title>Take Picture</title>
@@ -32,8 +43,34 @@ PICTURE="""\
 <body>
 <button onclick="document.location='index.html'">Home</button>
 <center><h1>Racoon Image Taker</h1></center>
-<center><p>Sup Bitches</p></center>
-<center><img src="img.png" width="1920" height="1080"></center>
+<center><p>Note: Please wait until Image Loads to Submit</p></center>
+<center><img src="img.png" width="640" height="480"></center>
+<center><button onclick="document.location='index.html'">Retake</button></center>
+<center><h3>Specify Image Info</h3></center>
+<center><form action="/take-picture.html" method="post">
+    Object Description: <input type="text" id="myText" name="desc" value=""><br>
+    <h4>Select Object Group</h5> 
+    {categories[0]}: <input type="radio" name="category" value="0"><br>
+    {categories[1]}: <input type="radio" name="category" value="1"><br>
+    {categories[2]}: <input type="radio" name="category" value="2"><br>
+    {categories[3]}: <input type="radio" name="category" value="3"><br>
+    {categories[4]}: <input type="radio" name="category" value="4"><br>
+    <br>
+    <input type="submit" name="submit" value="Submit">
+</form></center>
+
+</body>
+</html>
+"""
+
+SUCCESS = """\
+<html>
+<head>
+<title>Success!</title>
+</head>
+<body>
+<center><h1>Photo Saved</h1></center>
+<center><button onclick="document.location='index.html'">Home</button></center>
 </body>
 </html>
 """
@@ -55,7 +92,20 @@ class StreamingOutput(object):
             self.buffer.seek(0)
         return self.buffer.write(buf)
 
+global camera
+global output
+camera = picamera.PiCamera(resolution='640x480', framerate=24)
+output = StreamingOutput()
+camera.start_recording(output, format='mjpeg')
+
 class StreamingHandler(server.BaseHTTPRequestHandler):
+    global camera
+    global output
+    def _redirect(self, path):
+        self.send_response(303)
+        self.send_header('Content-type', 'text/html')
+        self.send_header('Location', path)
+        self.end_headers()
     def do_GET(self):
         if self.path == '/':
             self.send_response(301)
@@ -75,17 +125,27 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
             self.send_header('Content-Length', len(content))
             self.end_headers()
             self.wfile.write(content)
+        elif self.path == '/success.html':
+            content = SUCCESS.encode('utf-8')
+            self.send_response(200)
+            self.send_header('Content-Type', 'text/html')
+            self.send_header('Content-Length', len(content))
+            self.end_headers()
+            self.wfile.write(content)
         elif self.path == '/img.png':
-            with picamera.PiCamera() as camera:
-                camera.resolution = (1920,1080)
-                time.sleep(2)   # Camera warm-up time
-                camera.capture('img.png')
-                img = open("img.png", "r")
+            camera.stop_recording()
+            #camera.resolution = (1920,1080)
+            time.sleep(2)   # Camera warm-up time
+            camera.capture(output, 'png')
+            camera.capture("img.png")
+            frame = output.frame
             self.send_response(200)
             self.send_header('Content-Type', 'img/png')
-            self.send_header('Content-Length', len(img))
+            self.send_header('Content-Length', len(frame))
             self.end_headers()
-            self.wfile.write(img)
+            self.wfile.write(frame)
+            camera.resolution=(640,480)
+            camera.start_recording(output, format='mjpeg')
         elif self.path == '/stream.mjpg':
             self.send_response(200)
             self.send_header('Age', 0)
@@ -111,19 +171,39 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
         else:
             self.send_error(404)
             self.end_headers()
+    
+    def do_POST(self):
+        """ do_POST() can be tested using curl command 
+            'curl -d "submit=On" http://server-ip-address:port' 
+        """
+        content_length = int(self.headers['Content-Length'])    # Get the size of data
+        post_data = bytes.decode(self.rfile.read(content_length))   # Get the data
+        print(post_data)
+        data = post_data.split("&")[:2]
+        data[0] = data[0].replace("desc=", "").lower().replace("+", "").replace("-", "").replace("_", "")
+        data[1] = categories[int(data[1].replace("category=", ""))]
+        print(str(data))
+        img_path= "/home/pi/RACOON/Images/" + str(data[1])
+        if not(os.path.isdir(img_path)):
+            os.mkdir(img_path)
+        img_path += f"/{data[0]}"
+        i = 0
+        while os.path.exists(f"{img_path}{i}.png"):
+            i += 1
+        img_path += f"{i}.png"
+        Path("/home/pi/RACOON/Scripts/img.png").rename(img_path)
+        self._redirect('/success.html')
+        
 
 class StreamingServer(socketserver.ThreadingMixIn, server.HTTPServer):
     allow_reuse_address = True
     daemon_threads = True
 
-with picamera.PiCamera(resolution='640x480', framerate=24) as camera:
-    output = StreamingOutput()
-    #Uncomment the next line to change your Pi's Camera rotation (in degrees)
-    #camera.rotation = 90
-    camera.start_recording(output, format='mjpeg')
-    try:
-        address = ('', 8000)
-        server = StreamingServer(address, StreamingHandler)
-        server.serve_forever()
-    finally:
-        camera.stop_recording()
+#Uncomment the next line to change your Pi's Camera rotation (in degrees)
+#camera.rotation = 90
+try:
+    address = ('', 8000)
+    server = StreamingServer(address, StreamingHandler)
+    server.serve_forever()
+finally:
+    camera.stop_recording()
