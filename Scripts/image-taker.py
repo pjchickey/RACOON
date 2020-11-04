@@ -159,7 +159,7 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
             ERROR = f"""\
             <html>
             <head>
-            <title>Success!</title>
+            <title>Error</title>
             </head>
             <body>
             <center><h1>Well Shit.</h1></center>
@@ -240,6 +240,7 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
             self._redirect('/success.html')
         except subprocess.CalledProcessError as e:
             error_text = e.output.decode('utf-8')
+            print(error_text)
             self._redirect('/error.html')
         
 
