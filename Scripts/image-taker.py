@@ -96,14 +96,12 @@ def get_current_branch():
     return current_branch
 
 def upload_image(short_img_path):
-    try:
-        commit_info = short_img_path.split("/")
-        out = subprocess.check_output(["git", "pull"])
-        out = subprocess.check_output(["git", "add", "."])
-        out = subprocess.check_output(["git", "commit", "-a", "-m", f"Upload {commit_info[1]} to {commit_info[0]}"])
-    except subprocess.CalledProcessError:
-        self._redirect('/error.html')
-        error_text = out.decode('utf-8')
+    commit_info = short_img_path.split("/")
+    out = subprocess.check_output(["git", "pull"])
+    out = subprocess.check_output(["git", "add", "."])
+    out = subprocess.check_output(["git", "commit", "-a", "-m", f"Upload {commit_info[1]} to {commit_info[0]}"])
+
+    return out
 
 class StreamingOutput(object):
     def __init__(self):
@@ -236,8 +234,12 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
             i += 1
         img_path += f"{i}.png"
         Path("/home/pi/RACOON/Scripts/img.png").rename(img_path)
-        upload_image(img_path.replace("/home/pi/RACOON/Images/", ""))
-        self._redirect('/success.html')
+        try:
+            out = upload_image(img_path.replace("/home/pi/RACOON/Images/", ""))
+            self._redirect('/success.html')
+        except subprocess.CalledProcessError:
+            error_text = out.decode('utf-8')
+            self._redirect('/error.html')
         
 
 class StreamingServer(socketserver.ThreadingMixIn, server.HTTPServer):
