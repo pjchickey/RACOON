@@ -98,7 +98,7 @@ def get_current_branch():
 def upload_image(short_img_path):
     commit_info = short_img_path.split("/")
     print(subprocess.check_output(["git", "pull"]).decode('utf-8'))
-    print(subprocess.check_output(["git", "add", "."]).decode('utf-8'))
+    print(subprocess.check_output(["git", "add", "-A"]).decode('utf-8'))
     print(subprocess.check_output(["git", "commit", "-a", "-m", f"Upload {commit_info[1]} to {commit_info[0]}"]).decode('utf-8'))
 
 class StreamingOutput(object):
