@@ -238,7 +238,7 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
             out = upload_image(img_path.replace("/home/pi/RACOON/Images/", ""))
             self._redirect('/success.html')
         except subprocess.CalledProcessError:
-            error_text = out.decode('utf-8')
+            error_text = subprocess.CalledProcessError.output
             self._redirect('/error.html')
         
 
