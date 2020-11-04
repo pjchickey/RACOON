@@ -226,11 +226,9 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
         dir_made = False
         content_length = int(self.headers['Content-Length'])    # Get the size of data
         post_data = bytes.decode(self.rfile.read(content_length))   # Get the data
-        print(post_data)
         data = post_data.split("&")[:2]
         data[0] = data[0].replace("desc=", "").lower().replace("+", "").replace("-", "").replace("_", "")
         data[1] = categories[int(data[1].replace("category=", ""))]
-        print(str(data))
         folder_path= "/home/pi/RACOON/Images/" + str(data[1])
         if not(os.path.isdir(folder_path)):
             os.mkdir(folder_path)
@@ -243,7 +241,6 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
         Path("/home/pi/RACOON/Scripts/img.png").rename(img_path)
         try:
             out = upload_image(img_path.replace("/home/pi/RACOON/Images/", ""))
-            print(out)
             self._redirect('/success.html')
         except subprocess.CalledProcessError as e:
             error_text = e.output.decode('utf-8')
