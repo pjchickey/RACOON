@@ -100,6 +100,8 @@ def upload_image(short_img_path):
     print(subprocess.check_output(["git", "pull"]).decode('utf-8'))
     print(subprocess.check_output(["git", "add", "-A"]).decode('utf-8'))
     print(subprocess.check_output(["git", "commit", "-a", "-m", f"Upload {commit_info[1]} to {commit_info[0]}"]).decode('utf-8'))
+    print(subprocess.check_output(["git", "push"))
+
 
 class StreamingOutput(object):
     def __init__(self):
