@@ -24,11 +24,30 @@ RE_CURRENT_BRANCH = re.compile(
 )
 
 categories = [
-    "Cat1",
-    "Cat2",
-    "waaa",
-    "Cat4",
-    "Cat5"
+    #Recycleable
+    "Paper-Newspapers",
+    "Paper-Office",
+    "Paper-Magazines",
+    "Paper-Junk_Mail",
+    "Plastic-Bottles",
+    "Plastic-Other",
+    "Cardboard-Boxes",
+    "Cardboard-Other",
+    "Steel_and_Tin",
+    "Aluminum",
+    "Glass",
+    #NonRecycleable
+    "Plastic_Bags",
+    "Plastic_Wrap",
+    "No_6_Plastics",
+    "Plasticware",
+    "Plastic_Straws",
+    "Drink_Cartons",
+    "Paper_Cups",
+    "Food_Waste",
+    "Styrofoam",
+    "Pizza_Boxes",
+    "Other"
 ]
 
 HOME=f"""\
@@ -57,16 +76,35 @@ PICTURE=f"""\
 <center><p>Note: Please wait until Image Loads to Submit</p></center>
 <center><img src="img.png" width="{CAMERA_RESOLUTION[0]}" height="{CAMERA_RESOLUTION[1]}"></center>
 <center><button onclick="document.location='index.html'">Retake</button></center>
-<center><h3>Specify Image Info</h3></center>
+<center><h2>Specify Image Info</h3></center>
 <center><form action="/take-picture.html" method="post">
-    Object Description: <input type="text" id="myText" name="desc" value=""><br>
-    <h4>Select Object Group</h5> 
+    Object Name (ex: pepsi can): <input type="text" id="myText" name="desc" value=""><br>
+    <h3>Select Object Group</h3> 
+    <h4>Recycleable</h4>
     {categories[0]}: <input type="radio" name="category" value="0"><br>
     {categories[1]}: <input type="radio" name="category" value="1"><br>
     {categories[2]}: <input type="radio" name="category" value="2"><br>
     {categories[3]}: <input type="radio" name="category" value="3"><br>
     {categories[4]}: <input type="radio" name="category" value="4"><br>
+    {categories[5]}: <input type="radio" name="category" value="5"><br>
+    {categories[6]}: <input type="radio" name="category" value="6"><br>
+    {categories[7]}: <input type="radio" name="category" value="7"><br>
+    {categories[8]}: <input type="radio" name="category" value="8"><br>
+    {categories[9]}: <input type="radio" name="category" value="9"><br>
+    {categories[10]}: <input type="radio" name="category" value="10"><br>
     <br>
+    <h4>NonRecycleable</h4>
+    {categories[11]}: <input type="radio" name="category" value="11"><br>
+    {categories[12]}: <input type="radio" name="category" value="12"><br>
+    {categories[13]}: <input type="radio" name="category" value="13"><br>
+    {categories[14]}: <input type="radio" name="category" value="14"><br>
+    {categories[15]}: <input type="radio" name="category" value="15"><br>
+    {categories[16]}: <input type="radio" name="category" value="16"><br>
+    {categories[17]}: <input type="radio" name="category" value="17"><br>
+    {categories[18]}: <input type="radio" name="category" value="18"><br>
+    {categories[19]}: <input type="radio" name="category" value="19"><br>
+    {categories[20]}: <input type="radio" name="category" value="20"><br>
+    {categories[21]}: <input type="radio" name="category" value="21"><br>
     <input type="submit" name="submit" value="Submit">
 </form></center>
 
