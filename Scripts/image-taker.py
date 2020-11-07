@@ -79,7 +79,6 @@ PICTURE=f"""\
 <center><h2>Specify Image Info</h3></center>
 <center><form action="/take-picture.html" method="post">
     Object Name (ex: pepsi can): <input type="text" id="myText" name="desc" value=""><br>
-    <h3>Select Object Group</h3> 
     <h4>Recycleable</h4>
     {categories[0]}: <input type="radio" name="category" value="0"><br>
     {categories[1]}: <input type="radio" name="category" value="1"><br>
@@ -92,7 +91,6 @@ PICTURE=f"""\
     {categories[8]}: <input type="radio" name="category" value="8"><br>
     {categories[9]}: <input type="radio" name="category" value="9"><br>
     {categories[10]}: <input type="radio" name="category" value="10"><br>
-    <br>
     <h4>NonRecycleable</h4>
     {categories[11]}: <input type="radio" name="category" value="11"><br>
     {categories[12]}: <input type="radio" name="category" value="12"><br>
