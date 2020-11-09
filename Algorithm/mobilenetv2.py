@@ -18,7 +18,7 @@ data = ImageClassifierDataLoader.from_folder(image_path)
 train_data, rest_data = data.split(0.8)
 validation_data, test_data = rest_data.split(0.5)
 
-model = image_classifier.create(train_data, model_spec=model_spec.efficientnet_lite1_spec, validation_data=validation_data)
+model = image_classifier.create(train_data, model_spec=model_spec.mobilenet_v2_spec, validation_data=validation_data)
 
 model.summary()
 
@@ -29,5 +29,5 @@ print("loss", loss)
 print("accuracy", accuracy)
 
 #model None
-#loss 0.7611449956893921
-#accuracy 0.8418972492218018
+#loss 0.8364136815071106
+#accuracy 0.8339921236038208

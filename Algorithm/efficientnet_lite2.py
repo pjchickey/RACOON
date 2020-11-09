@@ -27,3 +27,7 @@ loss, accuracy = model.evaluate(test_data)
 print("model", model.summary())
 print("loss", loss)
 print("accuracy", accuracy)
+
+#model None
+#loss 0.7557574510574341
+#accuracy 0.8498023748397827
