@@ -299,6 +299,10 @@ if get_current_branch() != "main":
 global camera
 global output
 camera = picamera.PiCamera(resolution=f'{CAMERA_RESOLUTION[0]}x{CAMERA_RESOLUTION[1]}', framerate=24)
+camera.awb_mode = 'off'
+rg, bg = (3.5, 0.9)
+camera.awb_gains = (rg, bg)
+camera.rotation = 90
 output = StreamingOutput()
 camera.start_recording(output, format='mjpeg')
 try:
