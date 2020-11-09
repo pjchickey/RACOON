@@ -11,10 +11,7 @@ from tflite_model_maker import model_spec
 
 import matplotlib.pyplot as plt
 
-image_path = tf.keras.utils.get_file(
-      'flower_photos',
-      'https://storage.googleapis.com/download.tensorflow.org/example_images/flower_photos.tgz',
-      untar=True)
+image_path = r"C:\Users\sotoa\PycharmProjects\pythonProject1\trashnet\data\dataset-resized"
 
 data = ImageClassifierDataLoader.from_folder(image_path)
 
