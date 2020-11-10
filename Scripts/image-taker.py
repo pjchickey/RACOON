@@ -280,8 +280,11 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
         img_path = folder_path + f"/{data[0]}"
         i = 0
         dirs = os.listdir(folder_path)
-        image_indx = max([int(x.split("--")[0].replace(f"{data[0]}", "")) for x in fnmatch.filter(dirs, f"{data[0]}[0123456789]*.png")]) + 1 #Get number for filename that isn't taken
-        img_path += f"{image_indx}--{str(data[1])}.png" #Add img no. and weight to filename
+        try:
+            image_indx = max([int(x.split("--")[0].replace(f"{data[0]}", "")) for x in fnmatch.filter(dirs, f"{data[0]}[0123456789]*.png")]) + 1 #Get number for filename that isn't taken
+        except ValueError:
+            image_indx = 0
+        img_path += f"{str(image_indx)}--{str(data[1])}.png" #Add img no. and weight to filename
         Path("/home/pi/RACOON/Scripts/img.png").rename(img_path)
         try:
             out = upload_image(img_path.replace("/home/pi/RACOON/Images/", ""))
