@@ -158,7 +158,7 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
             <center><form action="/take-picture.html" method="post" id="dataForm">
                 <input type="button" onclick="myFunction()" value="Clear Values"><br><br>
                 Object Name (ex: pepsi can): <input type="text" id="myText" name="desc" value="{data[0]}"><br>
-                Weight (Lbs) (Ex: 1.5): <input type="text" id="weightText" name="weight" value="{data[1]}"><br>
+                Weight (g) (Ex: 225.4): <input type="text" id="weightText" name="weight" value="{data[1]}"><br>
                 <h4>Recycleable</h4>
                 {categories[0]}: <input type="radio" name="category" value="0"{checked_cats[0]}><br>
                 {categories[1]}: <input type="radio" name="category" value="1"{checked_cats[1]}><br>
