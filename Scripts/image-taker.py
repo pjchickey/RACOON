@@ -13,6 +13,7 @@ from pathlib import Path
 import os
 import subprocess
 import re
+import fnmatch
 
 CAMERA_RESOLUTION = [600, 600]
 
@@ -65,51 +66,6 @@ HOME=f"""\
 </html>
 """
 
-PICTURE=f"""\
-<html>
-<head>
-<title>Take Picture</title>
-</head>
-<body>
-<button onclick="document.location='index.html'">Home</button>
-<center><h1>Racoon Image Taker</h1></center>
-<center><p>Note: Please wait until Image Loads to Submit</p></center>
-<center><img src="img.png" width="{CAMERA_RESOLUTION[0]}" height="{CAMERA_RESOLUTION[1]}"></center>
-<center><button onclick="document.location='index.html'">Retake</button></center>
-<center><h2>Specify Image Info</h3></center>
-<center><form action="/take-picture.html" method="post">
-    Object Name (ex: pepsi can): <input type="text" id="myText" name="desc" value=""><br>
-    <h4>Recycleable</h4>
-    {categories[0]}: <input type="radio" name="category" value="0"><br>
-    {categories[1]}: <input type="radio" name="category" value="1"><br>
-    {categories[2]}: <input type="radio" name="category" value="2"><br>
-    {categories[3]}: <input type="radio" name="category" value="3"><br>
-    {categories[4]}: <input type="radio" name="category" value="4"><br>
-    {categories[5]}: <input type="radio" name="category" value="5"><br>
-    {categories[6]}: <input type="radio" name="category" value="6"><br>
-    {categories[7]}: <input type="radio" name="category" value="7"><br>
-    {categories[8]}: <input type="radio" name="category" value="8"><br>
-    {categories[9]}: <input type="radio" name="category" value="9"><br>
-    {categories[10]}: <input type="radio" name="category" value="10"><br>
-    <h4>NonRecycleable</h4>
-    {categories[11]}: <input type="radio" name="category" value="11"><br>
-    {categories[12]}: <input type="radio" name="category" value="12"><br>
-    {categories[13]}: <input type="radio" name="category" value="13"><br>
-    {categories[14]}: <input type="radio" name="category" value="14"><br>
-    {categories[15]}: <input type="radio" name="category" value="15"><br>
-    {categories[16]}: <input type="radio" name="category" value="16"><br>
-    {categories[17]}: <input type="radio" name="category" value="17"><br>
-    {categories[18]}: <input type="radio" name="category" value="18"><br>
-    {categories[19]}: <input type="radio" name="category" value="19"><br>
-    {categories[20]}: <input type="radio" name="category" value="20"><br>
-    {categories[21]}: <input type="radio" name="category" value="21"><br>
-    <input type="submit" name="submit" value="Submit">
-</form></center>
-
-</body>
-</html>
-"""
-
 SUCCESS = """\
 <html>
 <head>
@@ -123,7 +79,10 @@ SUCCESS = """\
 """
 
 global error_text
+global data
 error_text = ""
+data = ["", "", ""]
+
 
 def get_current_branch():
 
@@ -180,6 +139,51 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(content)
         elif self.path == '/take-picture.html':
+            PICTURE=f"""\
+            <html>
+            <head>
+            <title>Take Picture</title>
+            </head>
+            <body>
+            <button onclick="document.location='index.html'">Home</button>
+            <center><h1>Racoon Image Taker</h1></center>
+            <center><p>Note: Please wait until Image Loads to Submit</p></center>
+            <center><img src="img.png" width="{CAMERA_RESOLUTION[0]}" height="{CAMERA_RESOLUTION[1]}"></center>
+            <center><button onclick="document.location='index.html'">Retake</button></center>
+            <center><h2>Specify Image Info</h3></center>
+            <center><form action="/take-picture.html" method="post">
+                Object Name (ex: pepsi can): <input type="text" id="myText" name="desc" value="{data[0]}"><br>
+                Weight (Lbs) (Ex: 1.5): <input type="text" id="weightText" name="weight" value="{data[1]}"><br>
+                <h4>Recycleable</h4>
+                {categories[0]}: <input type="radio" name="category" value="0" checked><br>
+                {categories[1]}: <input type="radio" name="category" value="1"><br>
+                {categories[2]}: <input type="radio" name="category" value="2"><br>
+                {categories[3]}: <input type="radio" name="category" value="3"><br>
+                {categories[4]}: <input type="radio" name="category" value="4"><br>
+                {categories[5]}: <input type="radio" name="category" value="5"><br>
+                {categories[6]}: <input type="radio" name="category" value="6"><br>
+                {categories[7]}: <input type="radio" name="category" value="7"><br>
+                {categories[8]}: <input type="radio" name="category" value="8"><br>
+                {categories[9]}: <input type="radio" name="category" value="9"><br>
+                {categories[10]}: <input type="radio" name="category" value="10"><br>
+                <h4>NonRecycleable</h4>
+                {categories[11]}: <input type="radio" name="category" value="11"><br>
+                {categories[12]}: <input type="radio" name="category" value="12"><br>
+                {categories[13]}: <input type="radio" name="category" value="13"><br>
+                {categories[14]}: <input type="radio" name="category" value="14"><br>
+                {categories[15]}: <input type="radio" name="category" value="15"><br>
+                {categories[16]}: <input type="radio" name="category" value="16"><br>
+                {categories[17]}: <input type="radio" name="category" value="17"><br>
+                {categories[18]}: <input type="radio" name="category" value="18"><br>
+                {categories[19]}: <input type="radio" name="category" value="19"><br>
+                {categories[20]}: <input type="radio" name="category" value="20"><br>
+                {categories[21]}: <input type="radio" name="category" value="21"><br>
+                <input type="submit" name="submit" value="Submit">
+            </form></center>
+
+            </body>
+            </html>
+            """
             content = PICTURE.encode('utf-8')
             self.send_response(200)
             self.send_header('Content-Type', 'text/html')
@@ -261,21 +265,23 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
             'curl -d "submit=On" http://server-ip-address:port' 
         """
         global error_text
+        global data
         dir_made = False
         content_length = int(self.headers['Content-Length'])    # Get the size of data
         post_data = bytes.decode(self.rfile.read(content_length))   # Get the data
-        data = post_data.split("&")[:2]
+        data = post_data.split("&")[:3]
         data[0] = data[0].replace("desc=", "").lower().replace("+", "").replace("-", "").replace("_", "")
-        data[1] = categories[int(data[1].replace("category=", ""))]
-        folder_path= "/home/pi/RACOON/Images/" + str(data[1])
+        data[1] = data[1].replace("weight=", "").lower().replace("+", "").replace("-", "").replace("_", "").replace(".", "_")
+        data[2] = categories[int(data[2].replace("category=", ""))]
+        folder_path= "/home/pi/RACOON/Images/" + str(data[2])   #Folder category
         if not(os.path.isdir(folder_path)):
             os.mkdir(folder_path)
             dir_made = True
         img_path = folder_path + f"/{data[0]}"
         i = 0
-        while os.path.exists(f"{img_path}{i}.png"):
-            i += 1
-        img_path += f"{i}.png"
+        dirs = os.listdir(folder_path)
+        image_indx = max([int(x.split("--")[0].replace(f"{data[0]}", "")) for x in fnmatch.filter(dirs, f"{data[0]}[0123456789]*.png")]) + 1 #Get number for filename that isn't taken
+        img_path += f"{image_indx}--{str(data[1])}.png" #Add img no. and weight to filename
         Path("/home/pi/RACOON/Scripts/img.png").rename(img_path)
         try:
             out = upload_image(img_path.replace("/home/pi/RACOON/Images/", ""))
