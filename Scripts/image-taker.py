@@ -156,7 +156,7 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
             <center><button onclick="document.location='index.html'">Retake</button></center>
             <center><h2>Specify Image Info</h3></center>
             <center><form action="/take-picture.html" method="post" id="dataForm">
-                <input type="button" onclick="myFunction()" value="Clear Values"><br>
+                <input type="button" onclick="myFunction()" value="Clear Values"><br><br>
                 Object Name (ex: pepsi can): <input type="text" id="myText" name="desc" value="{data[0]}"><br>
                 Weight (Lbs) (Ex: 1.5): <input type="text" id="weightText" name="weight" value="{data[1]}"><br>
                 <h4>Recycleable</h4>
@@ -183,6 +183,7 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
                 {categories[19]}: <input type="radio" name="category" value="19"{checked_cats[19]}><br>
                 {categories[20]}: <input type="radio" name="category" value="20"{checked_cats[20]}><br>
                 {categories[21]}: <input type="radio" name="category" value="21"{checked_cats[21]}><br>
+                <br>
                 <input type="submit" name="submit" value="Submit">
             </form></center>
             <script>
@@ -284,7 +285,7 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
         data[1] = data[1].replace("weight=", "").lower().replace("+", "").replace("-", "").replace("_", "")
         weight = data[1].replace(".", "_")
         data[2] = data[2].replace("category=", "")
-        category = categories[data[2]]
+        category = categories[int(data[2])]
         folder_path= "/home/pi/RACOON/Images/" + str(category)   #Folder category
         if not(os.path.isdir(folder_path)):
             os.mkdir(folder_path)
