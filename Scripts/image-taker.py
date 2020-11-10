@@ -141,7 +141,8 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
             self.wfile.write(content)
         elif self.path == '/take-picture.html':
             checked_cats = [""] * 22
-            checked_cats[int(data[2])] = " checked"
+            if data[2] != "":
+                checked_cats[int(data[2])] = " checked"
             PICTURE=f"""\
             <html>
             <head>
