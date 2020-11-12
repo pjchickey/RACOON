@@ -30,6 +30,7 @@ categories = [
     "Paper-Office",
     "Paper-Magazines",
     "Paper-Junk_Mail",
+    "Paper-Other"
     "Plastic-Bottles",
     "Plastic-Other",
     "Cardboard-Boxes",
@@ -140,7 +141,7 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(content)
         elif self.path == '/take-picture.html':
-            checked_cats = [""] * 22
+            checked_cats = [""] * len(categories)
             if data[2] != "":
                 checked_cats[int(data[2])] = " checked"
             PICTURE=f"""\
@@ -151,12 +152,12 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
             <body>
             <button onclick="document.location='index.html'">Home</button>
             <center><h1>Racoon Image Taker</h1></center>
-            <center><p>Note: Please wait until Image Loads to Submit</p></center>
+            <center><p>Note: Please wait until Image Loads to Open Box or Submit</p></center>
             <center><img src="img.png" width="{CAMERA_RESOLUTION[0]}" height="{CAMERA_RESOLUTION[1]}"></center>
             <center><button onclick="document.location='index.html'">Retake</button></center>
             <center><h2>Specify Image Info</h3></center>
             <center><form action="/take-picture.html" method="post" id="dataForm">
-                <input type="button" onclick="myFunction()" value="Clear Values"><br><br>
+                <input type="button" onclick="myFunction()" value="Clear Values (Doesn't work rn lol)"><br><br>
                 Object Name (ex: pepsi can): <input type="text" id="myText" name="desc" value="{data[0]}"><br>
                 Weight (g) (Ex: 225.4): <input type="text" id="weightText" name="weight" value="{data[1]}"><br>
                 <h4>Recycleable</h4>
@@ -171,8 +172,8 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
                 {categories[8]}: <input type="radio" name="category" value="8"{checked_cats[8]}><br>
                 {categories[9]}: <input type="radio" name="category" value="9"{checked_cats[9]}><br>
                 {categories[10]}: <input type="radio" name="category" value="10"{checked_cats[10]}><br>
-                <h4>NonRecycleable</h4>
                 {categories[11]}: <input type="radio" name="category" value="11"{checked_cats[11]}><br>
+                <h4>NonRecycleable</h4>
                 {categories[12]}: <input type="radio" name="category" value="12"{checked_cats[12]}><br>
                 {categories[13]}: <input type="radio" name="category" value="13"{checked_cats[13]}><br>
                 {categories[14]}: <input type="radio" name="category" value="14"{checked_cats[14]}><br>
@@ -183,6 +184,7 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
                 {categories[19]}: <input type="radio" name="category" value="19"{checked_cats[19]}><br>
                 {categories[20]}: <input type="radio" name="category" value="20"{checked_cats[20]}><br>
                 {categories[21]}: <input type="radio" name="category" value="21"{checked_cats[21]}><br>
+                {categories[22]}: <input type="radio" name="category" value="22"{checked_cats[22]}><br>
                 <br>
                 <input type="submit" name="submit" value="Submit">
             </form></center>
