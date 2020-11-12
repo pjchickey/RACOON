@@ -30,7 +30,7 @@ categories = [
     "Paper-Office",
     "Paper-Magazines",
     "Paper-Junk_Mail",
-    "Paper-Other"
+    "Paper-Other",
     "Plastic-Bottles",
     "Plastic-Other",
     "Cardboard-Boxes",
