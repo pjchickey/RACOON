@@ -18,7 +18,7 @@ data = ImageClassifierDataLoader.from_folder(image_path)
 train_data, rest_data = data.split(0.8)
 validation_data, test_data = rest_data.split(0.5)
 
-model = image_classifier.create(train_data, model_spec=model_spec.resnet_50_spec(), validation_data=validation_data)
+model = image_classifier.create(train_data, model_spec=model_spec.resnet_50_spec, validation_data=validation_data)
 
 model.summary()
 

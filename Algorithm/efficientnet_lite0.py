@@ -24,6 +24,8 @@ model.summary()
 
 loss, accuracy = model.evaluate(test_data)
 
+model.export(export_dir='.')
+
 print("model", model.summary())
 print("loss", loss)
 print("accuracy", accuracy)
