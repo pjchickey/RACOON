@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 image_path = r"C:\Users\sotoa\PycharmProjects\pythonProject1\trashnet\data\dataset-resized"
 
 data = ImageClassifierDataLoader.from_folder(image_path)
-
+print("data =", data, type(data))
 train_data, rest_data = data.split(0.8)
 validation_data, test_data = rest_data.split(0.5)
 
@@ -24,7 +24,7 @@ model.summary()
 
 loss, accuracy = model.evaluate(test_data)
 
-model.export(export_dir='.')
+#model.export(export_dir='.')
 
 print("model", model.summary())
 print("loss", loss)
