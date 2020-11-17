@@ -9,29 +9,22 @@ from tflite_model_maker import image_classifier
 from tflite_model_maker import ImageClassifierDataLoader
 from tflite_model_maker import model_spec
 
-import matplotlib.pyplot as plt
 
-image_path = r"C:\Users\sotoa\PycharmProjects\pythonProject1\trashnet\data\dataset-resized"
+image_path = r"..\Images-resized"
 
 data = ImageClassifierDataLoader.from_folder(image_path)
-print("data =", data, type(data))
 train_data, validation_data = data.split(0.9)
-#validation_data, test_data = rest_data.split(0.5)
 test_data = ImageClassifierDataLoader.from_folder(r"C:\Users\sotoa\PycharmProjects\RACOON\test-folder")
 
 model = image_classifier.create(train_data, model_spec=model_spec.efficientnet_lite0_spec, validation_data=validation_data)
 
-#model.summary()
-print("HaHA")
 loss, accuracy = model.evaluate(test_data)
-print("HaHa")
 
-#model.export(export_dir='.')
 
-#print("model", model.summary())
+#model.export(export_dir='.', tflite_filename='model_efficientnet_lite0.tflite')
+
 print("loss", loss)
 print("accuracy", accuracy)
 
-#model None
 #loss 0.7411657571792603
 #accuracy 0.8695651888847351

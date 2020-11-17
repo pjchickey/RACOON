@@ -20,14 +20,15 @@ validation_data, test_data = rest_data.split(0.5)
 
 model = image_classifier.create(train_data, model_spec=model_spec.resnet_50_spec, validation_data=validation_data)
 
-model.summary()
+
 
 loss, accuracy = model.evaluate(test_data)
 
-print("model", model.summary())
+
 print("loss", loss)
 print("accuracy", accuracy)
 
-#model None
+#model.export(export_dir='.', tflite_filename='model_ResNet50.tflite')
+
 #loss 0.8315564393997192
 #accuracy 0.8339921236038208

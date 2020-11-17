@@ -20,14 +20,14 @@ validation_data, test_data = rest_data.split(0.5)
 
 model = image_classifier.create(train_data, model_spec=model_spec.efficientnet_lite2_spec, validation_data=validation_data)
 
-model.summary()
-
 loss, accuracy = model.evaluate(test_data)
 
 print("model", model.summary())
 print("loss", loss)
 print("accuracy", accuracy)
 
-#model None
+#model.export(export_dir='.', tflite_filename='model_efficientnet_lite2.tflite')
+
+
 #loss 0.7557574510574341
 #accuracy 0.8498023748397827
