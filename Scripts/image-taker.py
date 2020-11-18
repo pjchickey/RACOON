@@ -67,14 +67,18 @@ HOME=f"""\
 </html>
 """
 
-SUCCESS = """\
+SUCCESS =f"""\
 <html>
 <head>
-<title>Success!</title>
+<title>RACOON Image Taker</title>
 </head>
 <body>
-<center><h1>Photo Saved</h1></center>
-<center><button onclick="document.location='index.html'">Home</button></center>
+<button onclick="document.location='index.html'">Home</button>
+<center><h2>Image Saved.</h1></center>
+<center><h1>Racoon Image Taker</h1></center>
+<center><img src="stream.mjpg" width="{CAMERA_RESOLUTION[0]}" height="{CAMERA_RESOLUTION[1]}"></center>
+<br>
+<center><button onclick="document.location='take-picture.html'">Take Picture</button></center>
 </body>
 </html>
 """
