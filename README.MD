@@ -1,6 +1,5 @@
-Rice 2020-2021 ECE Senior Design Project
+#Rice 2020-2021 ECE Senior Design Project
 
-Categories
 Recycleable Categories:
 =======================
   - Paper-Newspapers
