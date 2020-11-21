@@ -25,4 +25,5 @@
   - Food_Waste
   - Styrofoam
   - Pizza_Boxes
+  - Dirty_Food_Containers
   - Other
