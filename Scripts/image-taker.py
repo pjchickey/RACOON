@@ -49,6 +49,7 @@ categories = [
     "Food_Waste",
     "Styrofoam",
     "Pizza_Boxes",
+    "Dirty_Food_Containers",
     "Other"
 ]
 
@@ -189,6 +190,7 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
                 {categories[20]}: <input type="radio" name="category" value="20"{checked_cats[20]}><br>
                 {categories[21]}: <input type="radio" name="category" value="21"{checked_cats[21]}><br>
                 {categories[22]}: <input type="radio" name="category" value="22"{checked_cats[22]}><br>
+                {categories[23]}: <input type="radio" name="category" value="23"{checked_cats[23]}><br>
                 <br>
                 <input type="submit" name="submit" value="Submit">
             </form></center>
