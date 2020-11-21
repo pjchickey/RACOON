@@ -1,7 +1,6 @@
 # Rice 2020-2021 ECE Senior Design Project
 
-Recycleable Categories:
-=======================
+## Recycleable Categories:
   - Paper-Newspapers
   - Paper-Office
   - Paper-Magazines
@@ -15,8 +14,7 @@ Recycleable Categories:
   - Aluminum
   - Glass
  
-NonRecycleable Categories:
-==========================
+## NonRecycleable Categories:
   - Plastic_Bags
   - Plastic_Wrap
   - No_6_Plastics
