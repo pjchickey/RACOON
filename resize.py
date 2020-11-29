@@ -34,9 +34,15 @@ def main():
 	cardboardboxDir = os.path.join(prepath, 'Cardboard-Boxes')
 	cardboardotherDir = os.path.join(prepath, 'Cardboard-Other')
 	glassDir = os.path.join(prepath, 'Glass')
+	otherDir = os.path.join(prepath, 'Other')
 	paperjunkDir = os.path.join(prepath, 'Paper-Junk_Mail')
+	paperotherDir = os.path.join(prepath, 'Paper-Other')
 	plasticbottlesDir = os.path.join(prepath, 'Plastic-Bottles')
+	plasticotherDir = os.path.join(prepath, 'Plastic-Other')
+	plasticbagsDir = os.path.join(prepath, 'Plastic_Bags')
+	plasticwareDir = os.path.join(prepath, 'Plasticware')
 	steelandtinDir = os.path.join(prepath, 'Steel_and_Tin')
+	styrofoamDir = os.path.join(prepath, 'Styrofoam')
 
 	destPath = os.path.join(os.getcwd(), 'Images-resized')
 	try: 
@@ -57,14 +63,32 @@ def main():
 	#GLASS
 	fileWalk(glassDir, os.path.join(destPath, 'Glass'))
 
+	#OTHER
+	fileWalk(otherDir, os.path.join(destPath, 'Other'))
+
 	#PAPER-JUNK-MAIL
 	fileWalk(paperjunkDir, os.path.join(destPath, 'Paper-Junk_Mail'))
+
+	#PAPER-OTHER
+	fileWalk(paperotherDir, os.path.join(destPath, 'Paper-Other'))
 
 	#PLASTIC-BOTTLES
 	fileWalk(plasticbottlesDir, os.path.join(destPath, 'Plastic-Bottles'))
 
+	#PLASTIC-OTHER
+	fileWalk(plasticotherDir, os.path.join(destPath, 'Plastic-Other'))
+
+	#PLASTIC_BAGS
+	fileWalk(plasticbagsDir, os.path.join(destPath, 'Plastic_Bags'))
+
+	#PLASTICWARE
+	fileWalk(plasticwareDir, os.path.join(destPath, 'Plasticware'))
+
 	#STEEL_AND_TIN
 	fileWalk(steelandtinDir, os.path.join(destPath, 'Steel_and_Tin'))
+
+	#STYROFOAM
+	fileWalk(styrofoamDir, os.path.join(destPath, 'Styrofoam'))
 
 if __name__ == '__main__':
     main()

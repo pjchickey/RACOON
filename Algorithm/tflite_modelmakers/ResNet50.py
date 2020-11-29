@@ -18,18 +18,17 @@ data = ImageClassifierDataLoader.from_folder(image_path)
 train_data, rest_data = data.split(0.8)
 validation_data, test_data = rest_data.split(0.5)
 
-model = image_classifier.create(train_data, model_spec=model_spec.efficientnet_lite1_spec, validation_data=validation_data)
+model = image_classifier.create(train_data, model_spec=model_spec.resnet_50_spec, validation_data=validation_data)
 
 
 
 loss, accuracy = model.evaluate(test_data)
 
-print("model", model.summary())
+
 print("loss", loss)
 print("accuracy", accuracy)
 
-#model.export(export_dir='.', tflite_filename='model_efficientnet_lite1.tflite')
+#model.export(export_dir=r"..\tflite_models", tflite_filename='model_ResNet50.tflite')
 
-
-#loss 0.7611449956893921
-#accuracy 0.8418972492218018
+#loss 0.8315564393997192
+#accuracy 0.8339921236038208

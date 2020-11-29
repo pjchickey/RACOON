@@ -26,7 +26,7 @@ print("model", model.summary())
 print("loss", loss)
 print("accuracy", accuracy)
 
-#model.export(export_dir='.', tflite_filename='model_efficientnet_lite2.tflite')
+#model.export(export_dir=r"..\tflite_models", tflite_filename='model_efficientnet_lite2.tflite')
 
 
 #loss 0.7557574510574341

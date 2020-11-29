@@ -23,4 +23,4 @@ model = image_classifier.create(train_data)
 
 loss, accuracy = model.evaluate(test_data)
 
-model.export(export_dir='.')
+model.export(export_dir='..')
