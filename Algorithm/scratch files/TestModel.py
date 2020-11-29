@@ -12,7 +12,7 @@ from PIL import Image
 
 thisdict = {0: "cardboard", 1: "glass", 2: "metal", 3: "paper", 4: "plastic", 5: "trash"}
 # Load the TFLite model and allocate tensors.
-interpreter = tf.lite.Interpreter(model_path="model.tflite")
+interpreter = tf.lite.Interpreter(model_path=r"tflite_models\model_efficientnet_lite0.tflite")
 interpreter.allocate_tensors()
 
 # Get input and output tensors.
@@ -26,7 +26,7 @@ print("output details", output_details)
 input_shape = input_details[0]['shape']
 
 
-img = Image.open(r"C:\Users\sotoa\PycharmProjects\RACOON\Images-resized\Paper-Junk_Mail\bidenmailflyer0--20.png")
+img = Image.open(r"/Images-resized/Paper-Junk_Mail/bidenmailflyer0--20.png")
 img = np.array(img, dtype=np.float32)
 print("shape =", img.shape)
 img = img[:, :, :3]

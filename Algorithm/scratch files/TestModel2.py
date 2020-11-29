@@ -5,7 +5,7 @@ from PIL import Image
 
 thisdict = {0: "cardboard", 1: "glass", 2: "metal", 3: "paper", 4: "plastic", 5: "trash"}
 # Load the TFLite model and allocate tensors.
-interpreter = tf.lite.Interpreter(model_path="model.tflite")
+interpreter = tf.lite.Interpreter(model_path=r"tflite_models\model_efficientnet_lite0.tflite")
 interpreter.allocate_tensors()
 
 # Get input and output tensors.
@@ -24,17 +24,19 @@ for filename in glob.glob(r'C:\Users\sotoa\PycharmProjects\RACOON\trashnet\data\
     mylist.append(filename)
 
 counter = 0
+
 for pic in image_list:
-#    print("type1", type(pic))
+    print("2")
+    print("type1", type(pic))
     pic = np.array(pic, dtype=np.float32)
-#    print("type2", pic.dtype)
+    print("type2", pic.dtype)
     pic = pic[:, :, :3]
-#    print("type3", pic.dtype)
+    print("type3", pic.dtype)
     image_list[counter] = np.expand_dims(pic, axis=0)
-#    print("type4", pic.dtype)
+    print("type4", pic.dtype)
     counter += 1
-#    print("shape =", pic.shape)
-print("first image", type(image_list[3]), image_list[3].dtype)
+    print("shape =", pic.shape)
+#print("first image", type(image_list[3]), image_list[3].dtype)
 
 input_data = image_list
 mydict = {}
