@@ -33,6 +33,7 @@ def main():
 	aluminumDir = os.path.join(prepath, 'Aluminum')
 	cardboardboxDir = os.path.join(prepath, 'Cardboard-Boxes')
 	cardboardotherDir = os.path.join(prepath, 'Cardboard-Other')
+	dirtyfoodcontainersDir = os.path.join(prepath, 'Dirty_Food_Containers')
 	glassDir = os.path.join(prepath, 'Glass')
 	otherDir = os.path.join(prepath, 'Other')
 	paperjunkDir = os.path.join(prepath, 'Paper-Junk_Mail')
@@ -40,6 +41,8 @@ def main():
 	plasticbottlesDir = os.path.join(prepath, 'Plastic-Bottles')
 	plasticotherDir = os.path.join(prepath, 'Plastic-Other')
 	plasticbagsDir = os.path.join(prepath, 'Plastic_Bags')
+	plasticstrawsDir = os.path.join(prepath, 'Plastic_Straws')
+	plasticwrapDir = os.path.join(prepath, 'Plastic_Wrap')
 	plasticwareDir = os.path.join(prepath, 'Plasticware')
 	steelandtinDir = os.path.join(prepath, 'Steel_and_Tin')
 	styrofoamDir = os.path.join(prepath, 'Styrofoam')
@@ -59,6 +62,9 @@ def main():
 
 	#CARDBOARD-OTHER
 	fileWalk(cardboardotherDir, os.path.join(destPath, 'Cardboard-Other'))
+
+	#DIRTY_FOOD_CONTAINERS
+	fileWalk(dirtyfoodcontainersDir, os.path.join(destPath, 'Dirty_Food_Containers'))
 
 	#GLASS
 	fileWalk(glassDir, os.path.join(destPath, 'Glass'))
@@ -80,6 +86,12 @@ def main():
 
 	#PLASTIC_BAGS
 	fileWalk(plasticbagsDir, os.path.join(destPath, 'Plastic_Bags'))
+
+	#PLASTIC_STRAWS
+	fileWalk(plasticstrawsDir, os.path.join(destPath, 'Plastic_Straws'))
+
+	#PLASTIC_WRAP
+	fileWalk(plasticwrapDir, os.path.join(destPath, 'Plastic_Wrap'))
 
 	#PLASTICWARE
 	fileWalk(plasticwareDir, os.path.join(destPath, 'Plasticware'))
