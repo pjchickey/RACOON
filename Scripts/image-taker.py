@@ -156,7 +156,7 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
             </head>
             <body>
             <button onclick="document.location='index.html'">Home</button>
-            <center><h1>Racoon Image Taker</h1></center>
+            <center><h1>Image Preview</h1></center>
             <center><p>Note: Please wait until Image Loads to Open Box or Submit</p></center>
             <center><img src="img.png" width="{CAMERA_RESOLUTION[0]}" height="{CAMERA_RESOLUTION[1]}"></center>
             <center><button onclick="document.location='index.html'">Retake</button></center>
