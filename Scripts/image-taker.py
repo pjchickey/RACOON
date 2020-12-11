@@ -15,6 +15,15 @@ import subprocess
 import re
 import fnmatch
 
+global serial_enabled
+
+try:
+    import serial
+    serial_enabled = True
+except ImportError:
+    print("Serial not set up, ignoring load cell portions of code...")
+    serial_enabled = False
+
 CAMERA_RESOLUTION = [600, 600]
 
 RE_CURRENT_BRANCH = re.compile(
@@ -128,6 +137,8 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
     global output
     global error_text
     global data
+    global ser
+    global serial_enabled
     def _redirect(self, path):
         self.send_response(303)
         self.send_header('Content-type', 'text/html')
@@ -149,6 +160,8 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
             checked_cats = [""] * len(categories)
             if data[2] != "":
                 checked_cats[int(data[2])] = " checked"
+            if serial_enabled:
+                data[1] = ser.readline().replace("b'", "").replace("g\\r\\n'")
             PICTURE=f"""\
             <html>
             <head>
@@ -327,6 +340,11 @@ if get_current_branch() != "main":
 
 global camera
 global output
+global ser
+if serial_enabled:
+    ser=serial.Serial("/dev/ttyACM0",9600)  #change ACM number as found from ls /dev/tty/ACM*
+    ser.baudrate=9600
+    ser.readline()
 camera = picamera.PiCamera(resolution=f'{CAMERA_RESOLUTION[0]}x{CAMERA_RESOLUTION[1]}', framerate=24)
 camera.awb_mode = 'off'
 rg, bg = (3.5, 0.9)
