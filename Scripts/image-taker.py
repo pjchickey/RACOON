@@ -161,7 +161,7 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
             if data[2] != "":
                 checked_cats[int(data[2])] = " checked"
             if serial_enabled:
-                for i in range(100):
+                for i in range(75):
                     ser.readline()
                 data[1] = str(ser.readline()).replace("b'", "").replace("g\\r\\n'", "")      #grab loadcell data from arduino
             PICTURE=f"""\
