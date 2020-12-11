@@ -334,10 +334,11 @@ class StreamingServer(socketserver.ThreadingMixIn, server.HTTPServer):
     allow_reuse_address = True
     daemon_threads = True
 
+"""
 if get_current_branch() != "main":
     print(get_current_branch())
     raise OSError("Not on Main branch! Commit any unsaved changes and switch to main using git checkout main and run this program again :)")
-
+"""
 global camera
 global output
 global ser
