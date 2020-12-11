@@ -139,10 +139,6 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
     global data
     global ser
     global serial_enabled
-    if serial_enabled:
-        ser=serial.Serial("/dev/ttyACM0",9600)  #change ACM number as found from ls /dev/tty/ACM*
-        ser.baudrate=9600
-        ser.readline()
     def _redirect(self, path):
         self.send_response(303)
         self.send_header('Content-type', 'text/html')
@@ -348,6 +344,10 @@ if get_current_branch() != "main":
 global camera
 global output
 global ser
+if serial_enabled:
+    ser=serial.Serial("/dev/ttyACM0",9600)  #change ACM number as found from ls /dev/tty/ACM*
+    ser.baudrate=9600
+    ser.readline()
 camera = picamera.PiCamera(resolution=f'{CAMERA_RESOLUTION[0]}x{CAMERA_RESOLUTION[1]}', framerate=24)
 camera.awb_mode = 'off'
 rg, bg = (3.5, 0.9)
