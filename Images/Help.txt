@@ -1,1 +1,4 @@
 Contains all labeled images we have captured, sorted by category
+
+Image structure takes the form of objectname#--weightingrams.png
+Example: carton2--86_3.png is the 2nd image taken of a carton, that weighs 86.3 grams.
