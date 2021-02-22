@@ -238,8 +238,8 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
         elif self.path == '/img.jpg':
             camera.stop_recording()
             #camera.resolution = (1920,1080)
-            time.sleep(2)   # Camera warm-up time
-            camera.capture(output, 'jpeg', quality=25)
+            time.sleep(1)   # Camera warm-up time
+            camera.capture(output, 'jpeg', quality=10)
             camera.capture("img.png")
             frame = output.frame
             self.send_response(200)
