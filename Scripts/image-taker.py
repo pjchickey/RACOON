@@ -239,7 +239,7 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
             camera.stop_recording()
             #camera.resolution = (1920,1080)
             time.sleep(2)   # Camera warm-up time
-            camera.capture(output, 'jpg')
+            camera.capture(output, 'jpeg')
             camera.capture("img.png")
             frame = output.frame
             self.send_response(200)
