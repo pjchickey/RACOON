@@ -1,7 +1,3 @@
-# Web streaming example
-# Source code from the official PiCamera package
-# http://picamera.readthedocs.io/en/latest/recipes2.html#web-streaming
-
 import io
 import picamera
 import logging
@@ -158,7 +154,7 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
             <button onclick="document.location='index.html'">Home</button>
             <center><h1>Image Preview</h1></center>
             <center><p>Note: Please wait until Image Loads to Open Box or Submit</p></center>
-            <center><img src="img.png" width="{CAMERA_RESOLUTION[0]}" height="{CAMERA_RESOLUTION[1]}"></center>
+            <center><img src="img.jpg" width="{CAMERA_RESOLUTION[0]}" height="{CAMERA_RESOLUTION[1]}"></center>
             <center><button onclick="document.location='index.html'">Retake</button></center>
             <center><h2>Specify Image Info</h3></center>
             <center><form action="/take-picture.html" method="post" id="dataForm">
@@ -239,15 +235,15 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
             self.send_header('Content-Length', len(content))
             self.end_headers()
             self.wfile.write(content)
-        elif self.path == '/img.png':
+        elif self.path == '/img.jpg':
             camera.stop_recording()
             #camera.resolution = (1920,1080)
             time.sleep(2)   # Camera warm-up time
-            camera.capture(output, 'png')
+            camera.capture(output, 'jpg')
             camera.capture("img.png")
             frame = output.frame
             self.send_response(200)
-            self.send_header('Content-Type', 'img/png')
+            self.send_header('Content-Type', 'img/jpg')
             self.send_header('Content-Length', len(frame))
             self.end_headers()
             self.wfile.write(frame)
