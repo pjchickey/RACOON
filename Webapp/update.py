@@ -31,6 +31,12 @@ def update_task(conn, task):
     cur.execute(sql, task)
     conn.commit()
 
+def delete_task(conn):
+    sql = ''' DELETE from user'''
+    cur = conn.cursor()
+    cur.execute(sql)
+    conn.commit()
+
 
 def main():
     database = "database.db"
@@ -46,7 +52,11 @@ def main():
     # create a database connection
     conn = create_connection(database)
     with conn:
+        # for updating a user's reward total
         update_task(conn, (ID,))
+
+        # for wiping all users from the db
+        # delete_task(conn)
 
 
 if __name__ == '__main__':
