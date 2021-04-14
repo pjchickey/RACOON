@@ -8,6 +8,10 @@ void setup(){
 void loop(){
 
   if (Serial.available() > 0) {
+    String data = Serial.readStringUntil('\n');
+    Serial.print("You sent me: ");
+    Serial.println(data);
+    
     /*
     if(first){
       var = Serial.read();    // data type: int
@@ -15,7 +19,7 @@ void loop(){
     }
     Serial.print(var);
     */
-    
+    /*
     var = Serial.read();    // data type: int
     sendToPi(0);
     if(var == 49){
@@ -27,7 +31,7 @@ void loop(){
       delay(5000);
       sendToPi(1);  //Error - did not finish  
     }
-       
+    */
  }  
 }
 
