@@ -1,46 +1,75 @@
 import serial
 import time
 
+from serial.serialutil import SerialException
+
 def commandArduino(command, retries=50):
-    status = 2 #2- No acknowledgement receieved; 1 - No completion code recieved; 0 - Command successfully executed
-    SUCCESS = 0  #Success code
-    COMMANDS = {1:("Sort to Trash", 1000), 2:("Sort to Recycling", 1000)}     #code: (desc, number of retries for getting completion code)
+    status = 2 #2- No acknowledgement received; 1 - No completion code received; 0 - Command successfully executed
+    #{command code: (desc, type of response, number of retries for getting a completion)}
+    COMMANDS = {3:("Sort to Trash", 0, 1000), 4:("Sort to Recycling", 0, 1000)}     #0: Success code expected; 1: Binary result expected; 2: Any integer value expected     
     print(COMMANDS[command][0])
-    ser = serial.Serial('/dev/ttyACM0', 9600, timeout=1)
+    try:
+        ser = serial.Serial('/dev/ttyACM0', 9600, timeout=1)
+    except SerialException:
+        raise SerialException("Could not find Arduino at port /dev/ttyACM0")
     ser.flush()
     for i in range(retries):
-        ser.write(bytes(command, 'utf-8'))
+        ser.write(bytes(str(command), 'ascii'))
+        ser.write(b"\n")
         line = ser.readline().decode('utf-8').rstrip()
         line.replace(" ", "")
         line.replace("\n", "")
         line.replace("\t", "")
         if(line != ""):
-            print(line)
-            if(line == command):    #command acknowledged, arduino has started action
+            resp = int(line)
+            if(resp == command):    #command acknowledged, arduino has started action
                 status = 1
-                print(f"Command {command} acknowledged!")
+                print(f"Command acknowledged after {i} attempts.")
                 break
             else:
-                raise RuntimeError(f"Recieved bad response from Arduino: {line}. Expected {command}")
+                raise RuntimeError(f"Bad response from Arduino: Expected command {command}, but received {resp}")
     if status == 2:
         raise TimeoutError(f"Failed to communicate with Arduino after {retries} attempts")
     ser.flush()
-    for i in range(COMMANDS[command][1]):   #Wait for Arduino response that it completed the task
+    for i in range(COMMANDS[command][2]):   #Wait for Arduino response that it completed the task
         line = ser.readline().decode('utf-8').rstrip()
         line.replace(" ", "")
         line.replace("\n", "")
         line.replace("\t", "")
         if(line != ""):
-            print(line)
-            if(line == SUCCESS):
-                status = 0  #command complete
-                break   
-            elif(line != command):  #Check that Arduino isn't still sending acknowledgement
-                raise RuntimeError(f"Something went wrong when completing command {command}: {COMMANDS[command][0]}.")
+            resp = int(line)
+            resp_prefix = int(line[0])
+            if resp == command:
+                continue    #Arduino is still sending acknowledgement 
+            if resp_prefix == 0:    #Success code
+                if resp == 0 and COMMANDS[command][1] == 0:
+                    status = 0
+                    print(f"{COMMANDS[command][0]} completed successfully!\nRecieved task completion after {i} communication attempts")
+                    return None
+                else:
+                    raise ValueError(f"Got unexpected response {resp}.")
+            elif resp_prefix == 1:  #Error code
+                raise RuntimeError(f"Something went wrong when attempting to complete command {command}: {COMMANDS[command][0]}.\nReturn code: {resp}")
+            elif resp_prefix == 2:  #Any value
+                value = int(line[1:])
+                if COMMANDS[command][1] == 1:   #Binary response expected
+                    if value == 0 or value == 1:
+                        status = 0
+                        print(f"{COMMANDS[command][0]} completed successfully!\nValue Received: {value} \nReceived task completion after {i} communication attempts")
+                        return value
+                    else:
+                        raise ValueError(f"Got unexpected value {value} when expecting binary response.")   
+                else:   #Any integer value expected
+                    status = 0
+                    print(f"{COMMANDS[command][0]} completed successfully!\nValue Received: {value} \nReceived task completion after {i} communication attempts")
+                    return value    
+            else:
+                raise ValueError(f"Got unexpected prefix '{resp_prefix}' as part of response '{resp}'.")
+                
     if status == 1:
-        raise TimeoutError(f"Failed to hear command response from Arduino after {COMMANDS[command][1]} attempts")
-    else:
-        print("Task complete.")
+        raise TimeoutError(f"Failed to hear command response from Arduino after {COMMANDS[command][2]} attempts")
         
 if __name__ == '__main__':
-    commandArduino("0")    
+    output = commandArduino(3)
+    if not(output is None):
+        print(output)    
