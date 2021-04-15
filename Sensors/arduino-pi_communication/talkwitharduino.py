@@ -6,7 +6,12 @@ from serial.serialutil import SerialException
 def commandArduino(command, retries=50):
     status = 2 #2- No acknowledgement received; 1 - No completion code received; 0 - Command successfully executed
     #{command code: (desc, type of response, number of retries for getting a completion)}
-    COMMANDS = {3:("Sort to Trash", 0, 1000), 4:("Sort to Recycling", 0, 1000)}     #0: Success code expected; 1: Binary result expected; 2: Any integer value expected     
+    #type of response - 0: Success code expected; 1: Binary result expected; 2: Any integer value expected
+    COMMANDS = {3:("Sort to Trash", 0, 1000), 
+                4:("Sort to Recycling", 0, 1000), 
+                5:("Read Hinge State (Limit Switch)", 1, 100), 
+                6:("In-Device Object Detection (load cell)", 1, 100), 
+                7:("Read Sensor value", 2, 100)}          
     print(COMMANDS[command][0])
     try:
         ser = serial.Serial('/dev/ttyACM0', 9600, timeout=1)
@@ -70,6 +75,6 @@ def commandArduino(command, retries=50):
         raise TimeoutError(f"Failed to hear command response from Arduino after {COMMANDS[command][2]} attempts")
         
 if __name__ == '__main__':
-    output = commandArduino(3)
+    output = commandArduino(7)
     if not(output is None):
         print(output)    
