@@ -1,5 +1,6 @@
 bool first = true;
 int var;
+const int SUCCESS = 0;
 
 void setup(){
   Serial.begin(9600);
@@ -8,9 +9,14 @@ void setup(){
 void loop(){
 
   if (Serial.available() > 0) {
+    
     String data = Serial.readStringUntil('\n');
-    Serial.print("You sent me: ");
-    Serial.println(data);
+    data.trim();
+    int command = data.toInt();
+    sendToPi(command);
+    sendToPi(SUCCESS);
+    
+    
     
     /*
     if(first){
@@ -36,7 +42,7 @@ void loop(){
 }
 
 void sendToPi(int code){
-  int resendAttempts = 1000;
+  int resendAttempts = 100;
   for(int i = 0; i < resendAttempts;i++){
     Serial.print(code);
   }
