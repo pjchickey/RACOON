@@ -33,39 +33,22 @@ void setup()
 }
 
 void loop()
-{
-  /*
-  if (Serial.available() > 0) {
-    String data = Serial.readStringUntil('\n');
-    Serial.print("You sent me: ");
-    Serial.println(data);
-
-    rasp = data.toInt();
-    
-    if(rasp){
-      Serial.println("Sorting to Recycling...");
-    }else{
-      Serial.println("Sorting to Trash...");
-    }
-  }
-  */
-  
-  if (stepper.distanceToGo() == 0){
-    if(abs(stepper.targetPosition()) == targetPos){
-      stepper.moveTo(0);
-      //stepper.setSpeed(-constspeed);  
-    }
-    else if(stepper.targetPosition() == 0){
-      done = true;
-    }
-      
-  }
+{ 
   if(!done){
-    //stepper.runSpeed();
-    stepper.run();    
-  }
+      stepper.run();    
 
-  Serial.println(stepper.distanceToGo());
+    if (stepper.distanceToGo() == 0){
+      if(abs(stepper.targetPosition()) == targetPos){
+        stepper.moveTo(0); 
+      }
+      else if(stepper.targetPosition() == 0){
+        done = true;
+      }
+
+    }
+      stepper.run();    
+  }
+  
   
 
 }
