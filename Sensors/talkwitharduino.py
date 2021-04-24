@@ -9,9 +9,11 @@ def commandArduino(command, retries=50):
     #type of response - 0: Success code expected; 1: Binary result expected; 2: Any integer value expected
     COMMANDS = {3:("Sort to Trash", 0, 1000), 
                 4:("Sort to Recycling", 0, 1000), 
-                5:("Read Hinge State (Limit Switch)", 1, 100), 
+                5:("Read Door State (Limit Switch)", 1, 100), 
                 6:("In-Device Object Detection (load cell)", 1, 100), 
-                7:("Read Sensor value", 2, 100)}          
+                7:("Lock Door (Servo)", 0, 100),
+                8:("Unlock Door (Servo)", 0, 100),
+                9:("Read Sensor value", 2, 100)}          
     print(COMMANDS[command][0])
     try:
         ser = serial.Serial('/dev/ttyACM0', 9600, timeout=1)

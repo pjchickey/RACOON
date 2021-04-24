@@ -20,6 +20,7 @@ int exitCode = 0; //0 - Task completed successfully; 1 - Task could not complete
 int binaryResp = 0; //0 - Default; 1 - Activated
 int value = 0;  //Can be any integer value
 String stringVal = " ";
+int i = 0; //Test counter
 
 void setup(){
   Serial.begin(9600);
@@ -43,27 +44,37 @@ void loop(){
         sendToPi("4"); //Acknowledge command
         exitCode = sortObject(1); //Sort to Recycling
         stringVal = String(exitCode);
+        sendToPi(stringVal)
         break;
-      case 5: //Read Hinge State (Limit Switch)
+      case 5: //Read Door State (Limit Switch)
         sendToPi("5"); //Acknowledge command
-        delay(1000);
-        //binaryResp = readHingeState();
-        binaryResp = 1;
-        stringVal = "2" + String(binaryResp); 
+        binaryResp = readDoorState();
+        stringVal = "2" + String(binaryResp);
+        sendToPi(stringVal) 
         break;
       case 6: //Detect if object is in device (load cell)
         sendToPi("6"); //Acknowledge command
-        delay(2000);
-        //binaryResp = readHingeState();
-        binaryResp = 0;
-        stringVal = "2" + String(binaryResp); 
+        binaryResp = readLCState();
+        stringVal = "2" + String(binaryResp);
+        sendToPi(stringVal) 
         break;
-      case 7: //Dummy read Sensor value
+       case 7:  //Lock door
         sendToPi("7"); //Acknowledge command
-        delay(1000);
-        //value = readSensor();
-        value = 56;
-        stringVal = "2" + String(value); 
+        exitCode = lockDoor();
+        stringVal = String(exitCode);
+        sendToPi(stringVal)
+        break;
+       case 8:  //Unlock door
+        sendToPi("8"); //Acknowledge command
+        exitCode = unlockDoor();
+        stringVal = String(exitCode);
+        sendToPi(stringVal)
+        break;
+       case 9: //Dummy read Sensor value
+        sendToPi("9"); //Acknowledge command
+        value = readSensor();
+        stringVal = "2" + String(value);
+        sendToPi(stringVal) 
         break;
     }
     sendToPi(stringVal);
@@ -118,4 +129,52 @@ int sortObject(bool direction){ //0 Trash 1 Recycling
   }
 
   return 0;
+}
+/*
+ * Get whether door is open or closed
+ * 1 - Door closed
+ * 0 - Door open
+ */
+int readDoorState(void){
+  int j = i;
+  delay(2000);
+  i += 1;
+  if(i > 1){
+    i = 0;
+  }
+  return  j;   
+}
+
+/*
+ * Get whether object is detected in device
+ * 1 - Object detected
+ * 0 - Object not detected
+ */
+int readLCState(void){
+  delay(1000);
+  return 1;  
+}
+
+/*
+ * Lock the object entry door
+ */
+int lockDoor(void){
+  delay(3000);
+  return 0;
+}
+
+/*
+ * Unlock the object entry door
+ */
+int unlockDoor(void){
+  delay(3000);
+  return 0;  
+}
+
+/*
+ * Read an arbitrary sensor
+ */
+int readSensor(void){
+  delay(500);
+  return 56;  
 }
