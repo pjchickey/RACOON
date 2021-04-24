@@ -44,37 +44,37 @@ void loop(){
         sendToPi("4"); //Acknowledge command
         exitCode = sortObject(1); //Sort to Recycling
         stringVal = String(exitCode);
-        sendToPi(stringVal)
+        sendToPi(stringVal);
         break;
       case 5: //Read Door State (Limit Switch)
         sendToPi("5"); //Acknowledge command
         binaryResp = readDoorState();
         stringVal = "2" + String(binaryResp);
-        sendToPi(stringVal) 
+        sendToPi(stringVal); 
         break;
       case 6: //Detect if object is in device (load cell)
         sendToPi("6"); //Acknowledge command
         binaryResp = readLCState();
         stringVal = "2" + String(binaryResp);
-        sendToPi(stringVal) 
+        sendToPi(stringVal); 
         break;
        case 7:  //Lock door
         sendToPi("7"); //Acknowledge command
         exitCode = lockDoor();
         stringVal = String(exitCode);
-        sendToPi(stringVal)
+        sendToPi(stringVal);
         break;
        case 8:  //Unlock door
         sendToPi("8"); //Acknowledge command
         exitCode = unlockDoor();
         stringVal = String(exitCode);
-        sendToPi(stringVal)
+        sendToPi(stringVal);
         break;
        case 9: //Dummy read Sensor value
         sendToPi("9"); //Acknowledge command
         value = readSensor();
         stringVal = "2" + String(value);
-        sendToPi(stringVal) 
+        sendToPi(stringVal); 
         break;
     }
     sendToPi(stringVal);
@@ -82,7 +82,7 @@ void loop(){
 }
 
 void sendToPi(String val){
-  int resendAttempts = 10;
+  int resendAttempts = 2;
   char prefix = val[0];
   if(val == "0"){  //Success exit code
     for(int i = 0; i < resendAttempts;i++){
