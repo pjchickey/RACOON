@@ -82,7 +82,7 @@ void loop(){
 }
 
 void sendToPi(String val){
-  int resendAttempts = 2;
+  int resendAttempts = 5;
   char prefix = val[0];
   if(val == "0"){  //Success exit code
     for(int i = 0; i < resendAttempts;i++){

@@ -4,6 +4,7 @@ import time
 from serial.serialutil import SerialException
 
 def commandArduino(command, retries=50):
+    wait_time = .2
     status = 2 #2- No acknowledgement received; 1 - No completion code received; 0 - Command successfully executed
     #{command code: (desc, type of response, number of retries for getting a completion)}
     #type of response - 0: Success code expected; 1: Binary result expected; 2: Any integer value expected
@@ -52,6 +53,7 @@ def commandArduino(command, retries=50):
                 if resp == 0 and COMMANDS[command][1] == 0:
                     status = 0
                     print(f"{COMMANDS[command][0]} completed successfully!\nRecieved task completion after {i} communication attempts")
+                    time.sleep(wait_time)  #Give time for arduino to stop sending stuff
                     return None
                 else:
                     raise ValueError(f"Got unexpected response {resp}.")
@@ -63,12 +65,14 @@ def commandArduino(command, retries=50):
                     if value == 0 or value == 1:
                         status = 0
                         print(f"{COMMANDS[command][0]} completed successfully!\nValue Received: {value} \nReceived task completion after {i} communication attempts")
+                        time.sleep(wait_time)
                         return value
                     else:
                         raise ValueError(f"Got unexpected value {value} when expecting binary response.")   
                 else:   #Any integer value expected
                     status = 0
                     print(f"{COMMANDS[command][0]} completed successfully!\nValue Received: {value} \nReceived task completion after {i} communication attempts")
+                    time.sleep(wait_time)
                     return value    
             else:
                 raise ValueError(f"Got unexpected prefix '{resp_prefix}' as part of response '{resp}'.")
