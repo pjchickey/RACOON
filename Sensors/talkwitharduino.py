@@ -75,6 +75,8 @@ def commandArduino(command, retries=50):
         raise TimeoutError(f"Failed to hear command response from Arduino after {COMMANDS[command][2]} attempts")
         
 if __name__ == '__main__':
-    output = commandArduino(7)
+    output = commandArduino(3)
     if not(output is None):
-        print(output)    
+        print(output)
+    time.sleep(1)
+    output = commandArduino(4)    
