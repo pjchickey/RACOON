@@ -9,6 +9,11 @@
  * 7 - Read Sensor value
  */
 
+#include <AccelStepper.h>
+
+// Define a stepper and the pins it will use
+AccelStepper stepper(AccelStepper::DRIVER, 2, 4); // Defaults to AccelStepper::FULL4WIRE (4 pins) on 2, 3, 4, 5
+
 int command;
 String data;
 int exitCode = 0; //0 - Task completed successfully; 1 - Task could not complete
@@ -27,22 +32,16 @@ void loop(){
     data = Serial.readStringUntil('\n');
     data.trim();
     command = data.toInt();
-    //sendToPi(command);
-    //delay(1000);
-    //sendToPi(SUCCESS);
     switch(command){
       case 3: //Sort to Trash
         sendToPi("3"); //Acknowledge command
-        delay(5000);  //Placeholder for time to sort
-        exitCode = 0;
-        //exitCode = sortObject(0); //Sort to Trash
+        exitCode = sortObject(0); //Sort to Trash
         stringVal = String(exitCode);
+        sendToPi(stringVal);
         break;
       case 4: //Sort to Recycling
         sendToPi("4"); //Acknowledge command
-        delay(5000);  //Placeholder for time to sort
-        exitCode = 1;
-        //exitCode = sortObject(1); //Sort to Recycling
+        exitCode = sortObject(1); //Sort to Recycling
         stringVal = String(exitCode);
         break;
       case 5: //Read Hinge State (Limit Switch)
@@ -87,4 +86,36 @@ void sendToPi(String val){
       Serial.println(1111);  //Bad input for val
     }  
   }
+}
+
+/*
+ * Stepper Motor Function
+ */
+int sortObject(bool direction){ //0 Trash 1 Recycling
+  stepper.setMaxSpeed(1500); //1500
+  stepper.setAcceleration(500); //500
+  stepper.setCurrentPosition(0);
+  bool done = false;
+  int targetPos = 3100; //3000
+  if(direction){  //Recycling
+    stepper.moveTo(targetPos);
+  }else{    //Trash
+    stepper.moveTo(-targetPos);
+  }
+  while(!done){
+      stepper.run();    
+
+    if (stepper.distanceToGo() == 0){
+      if(abs(stepper.targetPosition()) == targetPos){
+        stepper.moveTo(0); 
+      }
+      else if(stepper.targetPosition() == 0){
+        done = true;
+      }
+
+    }
+      stepper.run();    
+  }
+
+  return 0;
 }
