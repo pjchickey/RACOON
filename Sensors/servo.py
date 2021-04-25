@@ -15,6 +15,8 @@ wiringpi.pwmSetClock(192)
 wiringpi.pwmSetRange(2000)
  
 delay_period = 0.01
+
+print("Writing to Servo...")
  
 while True:
         for pulse in range(50, 250, 1):
