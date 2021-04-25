@@ -1,27 +1,22 @@
-import time
-import wiringpi #sudo pip3 install wiringpi
- 
-# use 'GPIO naming'
-wiringpi.wiringPiSetupGpio()
- 
-# set #18 to be a PWM output
-wiringpi.pinMode(18, wiringpi.GPIO.PWM_OUTPUT)
- 
-# set the PWM mode to milliseconds stype
-wiringpi.pwmSetMode(wiringpi.GPIO.PWM_MODE_MS)
- 
-# divide down clock
-wiringpi.pwmSetClock(192)
-wiringpi.pwmSetRange(2000)
- 
-delay_period = 0.01
+import RPi.GPIO as GPIO
+from time import sleep
 
-print("Writing to Servo...")
- 
-while True:
-        for pulse in range(50, 250, 1):
-                wiringpi.pwmWrite(18, pulse)
-                time.sleep(delay_period)
-        for pulse in range(250, 50, -1):
-                wiringpi.pwmWrite(18, pulse)
-                time.sleep(delay_period)
+pin = 18
+
+GPIO.setmode(GPIO.BOARD)
+GPIO.setup(pin, GPIO.OUT)
+pwm=GPIO.PWM(pin, 50)
+pwm.start(0)
+
+def SetAngle(angle):
+	duty = angle / 18 + 2
+	GPIO.output(pin, True)
+	pwm.ChangeDutyCycle(duty)
+	sleep(1)
+	GPIO.output(pin, False)
+	pwm.ChangeDutyCycle(0)
+
+if __name__ == "main":
+    SetAngle(90) 
+    pwm.stop()
+    GPIO.cleanup()
