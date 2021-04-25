@@ -20,7 +20,6 @@ int exitCode = 0; //0 - Task completed successfully; 1 - Task could not complete
 int binaryResp = 0; //0 - Default; 1 - Activated
 int value = 0;  //Can be any integer value
 String stringVal = " ";
-int i = 0; //Test counter
 
 void setup(){
   Serial.begin(9600);
@@ -103,8 +102,8 @@ void sendToPi(String val){
  * Stepper Motor Function
  */
 int sortObject(bool direction){ //0 Trash 1 Recycling
-  stepper.setMaxSpeed(1500); //1500
-  stepper.setAcceleration(500); //500
+  stepper.setMaxSpeed(3000); //1500
+  stepper.setAcceleration(1000); //500
   stepper.setCurrentPosition(0);
   bool done = false;
   int targetPos = 3100; //3000
@@ -114,7 +113,7 @@ int sortObject(bool direction){ //0 Trash 1 Recycling
     stepper.moveTo(-targetPos);
   }
   while(!done){
-      stepper.run();    
+      stepper.run();     
 
     if (stepper.distanceToGo() == 0){
       if(abs(stepper.targetPosition()) == targetPos){
@@ -125,7 +124,7 @@ int sortObject(bool direction){ //0 Trash 1 Recycling
       }
 
     }
-      stepper.run();    
+      stepper.run();     
   }
 
   return 0;
@@ -136,8 +135,9 @@ int sortObject(bool direction){ //0 Trash 1 Recycling
  * 0 - Door open
  */
 int readDoorState(void){
+  static int i = 0;
   int j = i;
-  delay(2000);
+  delay(500);
   i += 1;
   if(i > 1){
     i = 0;
@@ -151,7 +151,7 @@ int readDoorState(void){
  * 0 - Object not detected
  */
 int readLCState(void){
-  delay(1000);
+  delay(500);
   return 1;  
 }
 
