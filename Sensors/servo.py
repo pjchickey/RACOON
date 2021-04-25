@@ -1,4 +1,4 @@
-import RPi.GPIO as GPIO
+import RPI.GPIO as GPIO
 from time import sleep
 
 pin = 18
