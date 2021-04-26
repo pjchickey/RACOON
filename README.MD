@@ -2,14 +2,14 @@
 
 Project RACOON is a safe, affordable, and easy to use device to reduce contamination in recycling loads. 
 
-##Code Structure
+## Code Structure
 
 The Github is broken up into 4 main folders: 
 
-- Algorithm: Contains the core functionality for our machine learning classifier and tensor flow lite model
-- Scripts: Contains necessary program flow and testing scripts for the operation of the Raspberry Pi and handling of the data
-- Sensors: Contains all Arduino and Raspberry Pi code needed to interface with the sensors of the device
-- Images: Contains our custom 1500 image dataset which we have used for training our model
+- *Algorithm:* Contains the core functionality for our machine learning classifier and tensor flow lite model
+- *Scripts:* Contains necessary program flow and testing scripts for the operation of the Raspberry Pi and handling of the data
+- *Sensors:* Contains all Arduino and Raspberry Pi code needed to interface with the sensors of the device
+- *Images:* Contains our custom 1500 image dataset which we have used for training our model
 
 ## Data Collection
 
@@ -20,7 +20,7 @@ During the course of our project, we developed a script (Scripts/image-taker.py)
 
 ## Images
 
-Although we collected our data in backgrounds more similar to our device (gray/metal floor), we believe that this labeled data can be useful to projects aiming to accomplish similar goals. For that reason, all of the images in our dataset are free to use (with attribution) by future students, researchers, and organizations. 
+Although we collected our data in backgrounds more similar to our device (gray/metal floor), we believe that this labeled data can be useful to projects aiming to accomplish similar goals. For that reason, all of the images in our dataset are *free to use (with attribution)* by future students, researchers, and organizations. 
 
 The data is labeled as follows: 
 
