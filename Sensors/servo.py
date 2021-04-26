@@ -1,4 +1,3 @@
-from _typeshed import FileDescriptor
 import RPi.GPIO as GPIO
 from time import sleep
 
