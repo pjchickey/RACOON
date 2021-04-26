@@ -8,14 +8,14 @@ GPIO.setup(pwm_pin, GPIO.OUT)
 
 
 def lockDoor():
-    pwm=GPIO.PWM(pwm_pin, 50)
+    pwm=GPIO.PWM(SERVO_PIN, 50)
     pwm.start(0)
     
     duty = 0 / 18 + 2
-    GPIO.output(pwm_pin, True)
+    GPIO.output(SERVO_PIN, True)
     pwm.ChangeDutyCycle(duty)
     sleep(1)
-    GPIO.output(pwm_pin, False)
+    GPIO.output(SERVO_PIN, False)
     pwm.ChangeDutyCycle(0)
     
     pwm.stop()
@@ -24,14 +24,14 @@ def lockDoor():
     return 0
 
 def unlockDoor():
-    pwm=GPIO.PWM(pwm_pin, 50)
+    pwm=GPIO.PWM(SERVO_PIN, 50)
     pwm.start(0)
     
     duty = 180 / 18 + 2
-    GPIO.output(pwm_pin, True)
+    GPIO.output(SERVO_PIN, True)
     pwm.ChangeDutyCycle(duty)
     sleep(1)
-    GPIO.output(pwm_pin, False)
+    GPIO.output(SERVO_PIN, False)
     pwm.ChangeDutyCycle(0)
     
     pwm.stop()
