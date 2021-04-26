@@ -1,11 +1,13 @@
 import RPi.GPIO as GPIO
 from time import sleep
 
+SERVO_PIN = 18
+GPIO.setwarnings(False) 
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(pwm_pin, GPIO.OUT)
+
+
 def lockDoor():
-    pwm_pin = 12
-    GPIO.setwarnings(False) 
-    GPIO.setmode(GPIO.BOARD)
-    GPIO.setup(pwm_pin, GPIO.OUT)
     pwm=GPIO.PWM(pwm_pin, 50)
     pwm.start(0)
     
@@ -22,10 +24,6 @@ def lockDoor():
     return 0
 
 def unlockDoor():
-    pwm_pin = 12
-    GPIO.setwarnings(False) 
-    GPIO.setmode(GPIO.BOARD)
-    GPIO.setup(pwm_pin, GPIO.OUT)
     pwm=GPIO.PWM(pwm_pin, 50)
     pwm.start(0)
     
