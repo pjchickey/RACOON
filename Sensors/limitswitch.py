@@ -2,7 +2,7 @@ from time import sleep  # Allows us to call the sleep function to slow down our 
 import RPi.GPIO as GPIO # Allows us to call our GPIO pins and names it just GPIO
  
 GPIO.setmode(GPIO.BCM)  # Set's GPIO pins to BCM GPIO numbering
-INPUT_PIN = 10           # Sets our input pin, in this example I'm connecting our button to pin 4. Pin 0 is the SDA pin so I avoid using it for sensors/buttons
+INPUT_PIN = 15           # Sets our input pin, in this example I'm connecting our button to pin 4. Pin 0 is the SDA pin so I avoid using it for sensors/buttons
 GPIO.setup(INPUT_PIN, GPIO.IN)  # Set our input pin to be an input
 
 # Create a function to run when the input is high
