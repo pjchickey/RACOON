@@ -14,4 +14,4 @@ GPIO.add_event_detect(INPUT_PIN, GPIO.FALLING, callback=inputLow, bouncetime=200
 # Start a loop that never ends
 while True:
     print('3.3');
-    #sleep(1);           # Sleep for a full second before restarting our loop
+    sleep(1);           # Sleep for a full second before restarting our loop
