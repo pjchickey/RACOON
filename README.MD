@@ -20,7 +20,7 @@ During the course of our project, we developed a script (Scripts/image-taker.py)
 
 ## Images
 
-Although we collected our data in backgrounds more similar to our device (gray/metal floor), we believe that this labeled data can be useful to projects aiming to accomplish similar goals. For that reason, all of the images in our dataset are *free to use (with attribution)* by future students, researchers, and organizations. 
+Although we collected our data in backgrounds more similar to our device (gray/metal floor), we believe that this labeled data can be useful to projects aiming to accomplish similar goals. For that reason, all of the images in our dataset are **free to use (with attribution)** by future students, researchers, and organizations. 
 
 The data is labeled as follows: 
 
