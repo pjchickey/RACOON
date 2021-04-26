@@ -8,9 +8,9 @@ GPIO.setup(SWITCH_PIN, GPIO.IN)           # Set our input pin to be an input
 # Start a loop that never ends
 def readLimitSwitch():
     if (GPIO.input(SWITCH_PIN) == True): # Physically read the pin now
-        switchStatus = 1
-    else:
         switchStatus = 0
+    else:
+        switchStatus = 1
     
     return switchStatus
 
