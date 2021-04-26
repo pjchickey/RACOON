@@ -14,5 +14,5 @@ def readLimitSwitch():
     
     return switchStatus
 
-print(readLimitSwitch)
+print(readLimitSwitch())
 
