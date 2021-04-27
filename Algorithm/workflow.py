@@ -101,7 +101,7 @@ def read_barcode():
     try: 
         code = barcode.barcode_reader()
     except PermissionError:
-        os.system('sudo chmod 666 /dev/hidraw1')
+        os.system('sudo chmod 777 /dev/hidraw1')
         print('caught PermissionError')
         code = barcode.barcode_reader()
     print(code)
