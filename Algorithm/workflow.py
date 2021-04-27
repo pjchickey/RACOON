@@ -97,13 +97,16 @@ def read_barcode():
     #global code
     #code = None
     #time.sleep(5)
-
+    
+    code = barcode.barcode_reader()
+    """
     try: 
         code = barcode.barcode_reader()
     except PermissionError:
         os.system('sudo chmod 777 /dev/hidraw1')
         print('caught PermissionError')
         code = barcode.barcode_reader()
+    """
     print(code)
     valid_code = code.startswith('racoon_')
     print(str(valid_code) + ' valid code')
