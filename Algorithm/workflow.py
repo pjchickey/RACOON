@@ -319,8 +319,9 @@ if __name__ == '__main__':
         if code == None:
             print('no user')
         else:
-            print('user is ' + code)
-            update_db.main(code)
+            clean_user = code.replace('racoon_', '')
+            print('user is ' + clean_user)
+            update_db.main(clean_user)
         #send_to_arduino(result)
 
         #while !(read_from_arduino()):
